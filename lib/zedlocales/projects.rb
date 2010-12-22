@@ -19,46 +19,29 @@ module Zedkit
   class Projects
     class ContentSections
       class << self
-        def get(*args)
-          zopts = args.extract_zedkit_options!
-          reshh = Zedkit::Client.get('content/sections', zopts[:user_key], zopts.zdelete_keys!(%w(user_key)))
-          yield(reshh) if (not reshh.nil?) && block_given?
-          reshh
+        def get(zks = {}, &block)
+          Zedkit::Client.crud(:get, "content/sections", zks, [], &block)
         end
       end
     end
 
     class Locales
       class << self
-        def get(*args)
-          zopts = args.extract_zedkit_options!
-          reshh = Zedkit::Client.get("projects/#{zopts[:project][:uuid]}/locales", zopts[:user_key])
-          yield(reshh) if (not reshh.nil?) && block_given?
-          reshh
+        def get(zks = {}, &block)
+          Zedkit::Client.crud(:get, "projects/#{zks[:project][:uuid]}/locales", zks, %w(project), &block)
         end
 
-        def create(*args)
-          zopts = args.extract_zedkit_options!
-          reshh = Zedkit::Client.create("projects/#{zopts[:project][:uuid]}/locales", zopts[:user_key],
-                                                             zopts.zdelete_keys!(%w(user_key project)))
-          yield(reshh) if (not reshh.nil?) && block_given?
-          reshh
+        def create(zks = {}, &block)
+          Zedkit::Client.crud(:create, "projects/#{zks[:project][:uuid]}/locales", zks, %w(project), &block)
         end
 
-        def update(*args)
-          zopts = args.extract_zedkit_options!
-          reshh = Zedkit::Client.update("projects/#{zopts[:project][:uuid]}/locales/#{zopts[:locale][:code]}",
-                                                  zopts[:user_key], zopts.zdelete_keys!(%w(user_key project)))
-          yield(reshh) if (not reshh.nil?) && block_given?
-          reshh
+        def update(zks = {}, &block)
+          Zedkit::Client.crud(:update,
+                              "projects/#{zks[:project][:uuid]}/locales/#{zks[:locale][:code]}", zks, %w(project), &block)
         end
 
-        def delete(*args)
-          zopts = args.extract_zedkit_options!
-          reshh = Zedkit::Client.delete("projects/#{zopts[:project][:uuid]}/locales/#{zopts[:locale][:code]}",
-                                                                                             zopts[:user_key])
-          yield(reshh) if (not reshh.nil?) && block_given?
-          reshh
+        def delete(zks = {}, &block)
+          Zedkit::Client.crud(:delete, "projects/#{zks[:project][:uuid]}/locales/#{zks[:locale][:code]}", zks, [], &block)
         end
       end
     end

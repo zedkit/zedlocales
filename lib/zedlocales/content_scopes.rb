@@ -19,15 +19,12 @@ module Zedlocales
   class ContentScopes
     class Content
       class << self
-        def get(*args)
-          zopts = args.extract_zedkit_options!
-          reshh = Zedkit::Client.get('content/content', zopts[:user_key], zopts.zdelete_keys!(%w(user_key)))
-          yield(reshh) if (not reshh.nil?) && block_given?
-          reshh
+        def get(zks = {}, &block)
+          Zedkit::Client.crud(:get, "content/content", zks, [], &block)
         end
       end
     end
-    
+
     class << self
       #
       # = Zedlocales Content Scopes
@@ -66,34 +63,20 @@ module Zedlocales
       #   end
       #
 
-      def get(*args)
-        zopts = args.extract_zedkit_options!
-        reshh = Zedkit::Client.get("content/scopes/#{zopts[:uuid]}", zopts[:user_key],
-                                               zopts.zdelete_keys!(%w(uuid user_key)))
-        yield(reshh) if (not reshh.nil?) && block_given?
-        reshh
+      def get(zks = {}, &block)
+        Zedkit::Client.crud(:get, "content/scopes/#{zks[:uuid]}", zks, [], &block)
       end
 
-      def create(*args)
-        zopts = args.extract_zedkit_options!
-        reshh = Zedkit::Client.create('content/scopes', zopts[:user_key], zopts.zdelete_keys!(%w(user_key)))
-        yield(reshh) if (not reshh.nil?) && block_given?
-        reshh
+      def create(zks = {}, &block)
+        Zedkit::Client.crud(:create, 'content/scopes', zks, [], &block)
       end
 
-      def update(*args)
-        zopts = args.extract_zedkit_options!
-        reshh = Zedkit::Client.update("content/scopes/#{zopts[:uuid]}", zopts[:user_key],
-                                                  zopts.zdelete_keys!(%w(uuid user_key)))
-        yield(reshh) if (not reshh.nil?) && block_given?
-        reshh
+      def update(zks = {}, &block)
+        Zedkit::Client.crud(:update, "content/scopes/#{zks[:uuid]}", zks, [], &block)
       end
 
-      def delete(*args)
-        zopts = args.extract_zedkit_options!
-        reshh = Zedkit::Client.delete("content/scopes/#{zopts[:uuid]}", zopts[:user_key])
-        yield(reshh) if (not reshh.nil?) && block_given?
-        reshh
+      def delete(zks = {}, &block)
+        Zedkit::Client.crud(:delete, "content/scopes/#{zks[:uuid]}", zks, [], &block)
       end
     end
   end

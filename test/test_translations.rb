@@ -18,14 +18,14 @@
 require 'helper'
 
 class TestContent < Test::Unit::TestCase
-  def test_get_translation
+  def test_get
     cs = Zedlocales::ContentScopes::Content.get(:user_key => @uu['user_key'], :scope => { :uuid => con_scopes[0]['uuid'] })
     cc = Zedlocales::Content::Translations.get(:user_key => @uu['user_key'], :content => { :uuid => cs[0]['uuid'] })
     tt = Zedlocales::Translations.get(:user_key => @uu['user_key'], :uuid => cc[0]['uuid'])
     assert_equal tt['content']['uuid'], cs[0]['uuid']
   end
 
-  def test_create_translation
+  def test_create
     cs = Zedlocales::ContentScopes::Content.get(:user_key => @uu['user_key'], :scope => { :uuid => con_scopes[0]['uuid'] })
     tt = Zedlocales::Translations.create(:user_key => @uu['user_key'], :content => { :uuid => cs[0]['uuid'] },
                                          :translation => { :locale => 'de', :source => 'ZEDKIT', :translation => 'yo' })
@@ -33,7 +33,7 @@ class TestContent < Test::Unit::TestCase
     assert_equal 'yo', tt['translation']
   end
 
-  def test_update_translation
+  def test_update
     cs = Zedlocales::ContentScopes::Content.get(:user_key => @uu['user_key'], :scope => { :uuid => con_scopes[0]['uuid'] })
     cc = Zedlocales::Content::Translations.get(:user_key => @uu['user_key'], :content => { :uuid => cs[0]['uuid'] })
     tt = Zedlocales::Translations.update(:user_key => @uu['user_key'],
@@ -43,10 +43,9 @@ class TestContent < Test::Unit::TestCase
     assert_equal 'yo', tt['translation']
   end
 
-  def test_destroy_translation
+  def test_destroy
     cs = Zedlocales::ContentScopes::Content.get(:user_key => @uu['user_key'], :scope => { :uuid => con_scopes[0]['uuid'] })
     cc = Zedlocales::Content::Translations.get(:user_key => @uu['user_key'], :content => { :uuid => cs[0]['uuid'] })
-    tt = Zedlocales::Translations.get(:user_key => @uu['user_key'], :uuid => cc[0]['uuid'])
-    assert_equal tt['content']['uuid'], cs[0]['uuid']
+    assert_nil Zedlocales::Translations.delete(:user_key => @uu['user_key'], :uuid => cc[0]['uuid'])
   end
 end

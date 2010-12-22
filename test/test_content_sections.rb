@@ -25,26 +25,26 @@ class TestContentSections < Test::Unit::TestCase
     assert_equal 'whatever', ss[0]['key']
   end
 
-  def test_get_content_section
+  def test_get
     ss = Zedlocales::ContentSections.get(:user_key => @uu['user_key'], :uuid => con_sections[0]['uuid'])
     assert_equal 'whatever', ss['key']
     assert_equal 32, ss['uuid'].length
   end
 
-  def test_create_content_section
+  def test_create
     ss = Zedlocales::ContentSections.create(:user_key => @uu['user_key'], :project => { :uuid => @uu['projects'][0] },
                                            :section => { :key => 'newsection' })
     assert_equal 32, ss['uuid'].length
     assert_equal 'newsection', ss['key']
   end
 
-  def test_update_content_section
+  def test_update
     ss = Zedlocales::ContentSections.update(:user_key => @uu['user_key'],
                                             :uuid => con_sections[0]['uuid'], :section => { :key => 'updatedsection' })
     assert_equal 'updatedsection', ss['key']
   end
 
-  def test_delete_content_section
-    assert_equal Zedlocales::ContentSections.delete(:user_key => @uu['user_key'], :uuid => con_sections[0]['uuid']), {}
+  def test_delete
+    assert_nil Zedlocales::ContentSections.delete(:user_key => @uu['user_key'], :uuid => con_sections[0]['uuid'])
   end
 end

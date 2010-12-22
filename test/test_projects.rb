@@ -50,9 +50,7 @@ class TestProjects < Test::Unit::TestCase
   end
 
   def test_delete_locale_connection
-    pl = Zedkit::Projects::Locales.delete(:user_key => @uu['user_key'], :project => { :uuid => @uu['projects'][0] },
-                                                                        :locale => { :code => 'fr'})
-    assert pl.is_a? Hash
-    assert_equal pl, {}
+    assert_nil Zedkit::Projects::Locales.delete(:user_key => @uu['user_key'], :project => { :uuid => @uu['projects'][0] },
+                                                                              :locale => { :code => 'fr'})
   end
 end

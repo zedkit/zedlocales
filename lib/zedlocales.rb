@@ -21,9 +21,11 @@ require 'zedkit'
 module Zedlocales
   class << self
     def entities(user_key)
-      reshh = Zedkit::Client.get('entities/zedlocales', user_key)
-      yield(reshh) if (not reshh.nil?) && block_given?
-      reshh
+      rs = Zedkit::Client.get('entities/zedlocales', user_key)
+      if rs && block_given?
+        rs.is_a?(Array) ? rs.each {|i| yield(i) } : yield(rs)
+      end
+      rs
     end
   end
 end

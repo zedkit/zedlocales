@@ -24,14 +24,14 @@ class TestContent < Test::Unit::TestCase
     assert_equal 2, tt.length
   end
 
-  def test_get_content
+  def test_get
     cs = Zedlocales::ContentScopes::Content.get(:user_key => @uu['user_key'], :scope => { :uuid => con_scopes[0]['uuid'] })
     cc = Zedlocales::Content.get(:user_key => @uu['user_key'], :uuid => cs[0]['uuid'])
     assert_equal 'whatever', cc['key']
     assert_equal cs[0]['uuid'], cc['uuid']
   end
 
-  def test_create_content
+  def test_create
     cc = Zedlocales::Content.create(:user_key => @uu['user_key'], :scope => { :uuid => con_scopes[0]['uuid'] },
                                                                   :content => { :key => 'yo', :content => 'yo yo' })
     assert_equal 32, cc['uuid'].length
@@ -39,7 +39,7 @@ class TestContent < Test::Unit::TestCase
     assert_equal 'yo yo', cc['content']
   end
   
-  def test_update_content
+  def test_update
     cs = Zedlocales::ContentScopes::Content.get(:user_key => @uu['user_key'], :scope => { :uuid => con_scopes[0]['uuid'] })
     cc = Zedlocales::Content.update(:user_key => @uu['user_key'], :uuid => cs[0]['uuid'], :content => { :content => 'yo' })
     assert_equal cs[0]['uuid'], cc['uuid']
@@ -47,9 +47,8 @@ class TestContent < Test::Unit::TestCase
     assert_equal 'yo', cc['content']
   end
 
-  def test_destroy_content
+  def test_destroy
     cs = Zedlocales::ContentScopes::Content.get(:user_key => @uu['user_key'], :scope => { :uuid => con_scopes[0]['uuid'] })
-    cc = Zedlocales::Content.delete(:user_key => @uu['user_key'], :uuid => cs[0]['uuid'])
-    assert_equal cc, {}
+    assert_nil Zedlocales::Content.delete(:user_key => @uu['user_key'], :uuid => cs[0]['uuid'])
   end
 end
