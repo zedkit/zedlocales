@@ -15,27 +15,21 @@
 # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ##
 
-require 'rubygems'
-require 'zedkit'
-
 module Zedlocales
-  class << self
-    def entities
-      rs = Zedkit::Client.get('entities/zedlocales')
-      if rs && block_given?
-        rs.is_a?(Array) ? rs.each {|i| yield(i) } : yield(rs)
+  class ProjectLocales
+    class << self
+      def create(zks = {}, &block)
+        Zedkit::Client.crud(:create, "projects/#{zks[:project][:uuid]}/locales", zks, %w(project), &block)
       end
-      rs
+
+      def update(zks = {}, &block)
+        Zedkit::Client.crud(:update,
+                            "projects/#{zks[:project][:uuid]}/locales/#{zks[:locale][:code]}", zks, %w(project), &block)
+      end
+
+      def delete(zks = {}, &block)
+        Zedkit::Client.crud(:delete, "projects/#{zks[:project][:uuid]}/locales/#{zks[:locale][:code]}", zks, [], &block)
+      end
     end
   end
 end
-
-require 'zedlocales/projects'
-require 'zedlocales/project_locales'
-require 'zedlocales/content_sections'
-require 'zedlocales/content_scopes'
-require 'zedlocales/content'
-require 'zedlocales/translations'
-
-require 'zedlocales/simple'
-require 'zedlocales/railtie' if defined?(Rails::Railtie)

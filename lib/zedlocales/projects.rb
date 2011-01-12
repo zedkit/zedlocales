@@ -17,31 +17,17 @@
 
 module Zedkit
   class Projects
-    class ContentSections
-      class << self
-        def get(zks = {}, &block)
-          Zedkit::Client.crud(:get, "content/sections", zks, [], &block)
-        end
-      end
-    end
-
-    class Locales
+    class ProjectLocales
       class << self
         def get(zks = {}, &block)
           Zedkit::Client.crud(:get, "projects/#{zks[:project][:uuid]}/locales", zks, %w(project), &block)
         end
-
-        def create(zks = {}, &block)
-          Zedkit::Client.crud(:create, "projects/#{zks[:project][:uuid]}/locales", zks, %w(project), &block)
-        end
-
-        def update(zks = {}, &block)
-          Zedkit::Client.crud(:update,
-                              "projects/#{zks[:project][:uuid]}/locales/#{zks[:locale][:code]}", zks, %w(project), &block)
-        end
-
-        def delete(zks = {}, &block)
-          Zedkit::Client.crud(:delete, "projects/#{zks[:project][:uuid]}/locales/#{zks[:locale][:code]}", zks, [], &block)
+      end
+    end
+    class ContentSections
+      class << self
+        def get(zks = {}, &block)
+          Zedkit::Client.crud(:get, "content/sections", zks, [], &block)
         end
       end
     end

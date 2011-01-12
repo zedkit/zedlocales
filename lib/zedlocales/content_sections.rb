@@ -17,14 +17,6 @@
 
 module Zedlocales
   class ContentSections
-    class ContentScopes
-      class << self
-        def get(zks = {}, &block)
-          Zedkit::Client.crud(:get, "content/scopes", zks, [], &block)
-        end
-      end
-    end
- 
     class << self
       #
       # = Zedlocales Content Sections
@@ -77,6 +69,14 @@ module Zedlocales
 
       def delete(zks = {}, &block)
         Zedkit::Client.crud(:delete, "content/sections/#{zks[:uuid]}", zks, [], &block)
+      end
+    end
+
+    class ContentScopes
+      class << self
+        def get(zks = {}, &block)
+          Zedkit::Client.crud(:get, "content/scopes", zks, [], &block)
+        end
       end
     end
   end

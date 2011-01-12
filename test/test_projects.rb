@@ -26,14 +26,14 @@ class TestProjects < Test::Unit::TestCase
   end
 
   def test_get_locale_connections
-    pl = Zedkit::Projects::Locales.get(:user_key => @uu['user_key'], :project => { :uuid => @uu['projects'][0] })
+    pl = Zedkit::Projects::ProjectLocales.get(:user_key => @uu['user_key'], :project => { :uuid => @uu['projects'][0] })
     assert pl.is_a? Array
     assert_equal 2, pl.length
   end
 
   def test_create_locale_connection
-    pl = Zedkit::Projects::Locales.create(:user_key => @uu['user_key'],
-                                          :project => { :uuid => @uu['projects'][0] }, :locale => { :code => 'sk' })
+    pl = Zedlocales::ProjectLocales.create(:user_key => @uu['user_key'],
+                                       :project => { :uuid => @uu['projects'][0] }, :locale => { :code => 'sk' })
     assert pl.is_a? Hash
     assert_equal @uu['projects'][0], pl['project']['uuid'] 
     assert_equal 'sk', pl['locale']['code']
@@ -41,8 +41,8 @@ class TestProjects < Test::Unit::TestCase
   end
 
   def test_update_locale_connection
-    pl = Zedkit::Projects::Locales.update(:user_key => @uu['user_key'], :project => { :uuid => @uu['projects'][0] },
-                                                                        :locale => { :code => 'fr', :stage => 'development' })
+    pl = Zedlocales::ProjectLocales.update(:user_key => @uu['user_key'], :project => { :uuid => @uu['projects'][0] },
+                                                                     :locale => { :code => 'fr', :stage => 'development' })
     assert pl.is_a? Hash
     assert_equal @uu['projects'][0], pl['project']['uuid']
     assert_equal 'fr', pl['locale']['code']
@@ -50,7 +50,7 @@ class TestProjects < Test::Unit::TestCase
   end
 
   def test_delete_locale_connection
-    assert_nil Zedkit::Projects::Locales.delete(:user_key => @uu['user_key'], :project => { :uuid => @uu['projects'][0] },
-                                                                              :locale => { :code => 'fr'})
+    assert_nil Zedlocales::ProjectLocales.delete(:user_key => @uu['user_key'], :project => { :uuid => @uu['projects'][0] },
+                                                                           :locale => { :code => 'fr'})
   end
 end
